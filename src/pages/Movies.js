@@ -34,7 +34,7 @@ const MoviesPage = () => {
       <ul>
         {movies.map(movie => (
           <li key={movie.id}>
-            <Link>{movie.original_title}</Link>
+            <Link to={`/movies/${movie.id}`}>{movie.original_title}</Link>
           </li>
         ))}
       </ul>

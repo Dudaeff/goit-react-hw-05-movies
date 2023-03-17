@@ -1,6 +1,6 @@
 import {  Route, Routes } from "react-router-dom";
 
-import Layout from "./components/Layout/Layout";
+import Layout from "./Layout/Layout";
 import HomePage from "pages/Home";
 import MoviesPage from "pages/Movies";
 import MoviesDetailsPage from "pages/MoviesDetails";
@@ -18,6 +18,7 @@ export const App = () => {
           <Route path="reviews" element={<ReviewsPage />} />
         </Route>
       </Route>
+      {/* <Route path="*" element={<div>Page not found</div>} />  */}
     </Routes>
   );
 };
