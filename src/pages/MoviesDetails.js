@@ -1,11 +1,15 @@
-import { Link, Outlet, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { Link, Outlet, useLocation, useParams } from 'react-router-dom';
+import { useEffect, useState, Suspense } from 'react';
 import { getMovieById } from 'services/MovieAPI';
+import MovieDescription from 'components/MovieDescription/MovieDescription';
+import { GoBackBtn, InformationLinksList } from './MoviesDetails.styled';
 
 const MoviesDetailsPage = () => {
-  const [movie, setMovie] = useState([]);
+  const [movie, setMovie] = useState({});
   const params = useParams();
   const movieId = params.movieId;
+  const location = useLocation();
+  const backLinkhref = location.state?.from ?? '/movies';
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -17,52 +21,27 @@ const MoviesDetailsPage = () => {
     return () => abortController.abort();
   }, [movieId]);
 
-  const {
-    poster_path,
-    genres,
-    vote_count,
-    original_title,
-    overview,
-    release_date,
-  } = movie;
-  const genresString = genres && genres.map(genre => genre.name).join(',');
-  const score = vote_count / 100;
-
   return (
     <section>
-      <div>
-        <img
-          src={`https://image.tmdb.org/t/p/w500${poster_path}`}
-          alt={original_title}
-        />
-      </div>
-      <ul>
-        <li>
-          <h1>{original_title}</h1>
-          <p>{release_date}</p>
-        </li>
-        <li>
-          <p>User score: {score.toFixed(2)}%</p>
-        </li>
-        <li>
-          <h2>Overview</h2>
-          <p>{overview}</p>
-        </li>
-        <li>
-          <h3>Genres</h3>
-          <p>{genresString}</p>
-        </li>
-      </ul>
+      <GoBackBtn to={backLinkhref}>Go back</GoBackBtn>
+      <MovieDescription movie={movie} />
+
       <h4>Additional information</h4>
-      <ul>
+      <InformationLinksList>
         <li>
-          <Link to={'cast'}>Casts</Link>
+          <Link to={'cast'} state={{ from: backLinkhref }}>
+            Casts
+          </Link>
         </li>
         <li>
-          <Link to={'reviews'}>Reviews</Link>
+          <Link to={'reviews'} state={{ from: backLinkhref }}>
+            Reviews
+          </Link>
         </li>
-      </ul>
-      <Outlet />
+      </InformationLinksList>
+      <Suspense fallback={<div>Loading...</div>}>
+        <Outlet />
+      </Suspense>
     </section>
   );
 };

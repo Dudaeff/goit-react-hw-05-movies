@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieDetails } from 'services/MovieAPI';
+import ReviewsList from 'components/ReviewsList/ReviewsList';
 
 const ReviewsPage = () => {
   const [reviews, setReviews] = useState([]);
@@ -18,25 +19,10 @@ const ReviewsPage = () => {
 
   return (
     <section>
-      <ul>
-        {reviews.map(
-          ({
-            id,
-            content,
-            author_details: { avatar_path, username, rating },
-          }) => (
-            <li key={id}>
-              <img
-                src={`https://image.tmdb.org/t/p/w200${avatar_path}`}
-                alt={username}
-              />
-              <p>{username}</p>
-              <p>Rating: {rating}</p>
-              <p>Review: {content}</p>
-            </li>
-          )
-        )}
-      </ul>
+      {reviews.length === 0 && (
+        <strong>We dont have any reviews for this movie</strong>
+      )}
+      {reviews.length > 0 && <ReviewsList reviews={reviews} />}
     </section>
   );
 };

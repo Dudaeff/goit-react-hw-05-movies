@@ -11,6 +11,7 @@ export const getTrendingMovies = async abortController => {
     const response = await axios.get(url, { signal: abortController.signal });
     return response.data;
   } catch (error) {
+    if (error.code === 'ERR_CANCELED') return;
     console.error(error.message);
   }
 };
@@ -23,6 +24,7 @@ export const getMovieByQuery = async (query, abortController) => {
     const response = await axios.get(url, { signal: abortController.signal });
     return response.data;
   } catch (error) {
+    if (error.code === 'ERR_CANCELED') return;
     console.error(error.message);
   }
 };
@@ -34,6 +36,7 @@ export const getMovieById = async (movieId, abortController) => {
     const response = await axios.get(url, { signal: abortController.signal });
     return response.data;
   } catch (error) {
+    if (error.code === 'ERR_CANCELED') return;
     console.error(error.message);
   }
 };
@@ -46,6 +49,7 @@ export const getMovieDetails = async (movieId, details, abortController) => {
     const response = await axios.get(url, { signal: abortController.signal });
     return response.data;
   } catch (error) {
+    if (error.code === 'ERR_CANCELED') return;
     console.error(error.message);
   }
 };
